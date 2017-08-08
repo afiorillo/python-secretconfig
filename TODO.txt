@@ -1,0 +1,5 @@
+INI-style subclass
+JSON-style subclass
+YAML-style subclass
+Symmetric encryption mix-in
+Asymmetric encryption mix-in
