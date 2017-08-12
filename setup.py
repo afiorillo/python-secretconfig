@@ -21,5 +21,10 @@ setup(
     classifiers=[
         'Development Status :: 1 - Planning',
         'Topic :: Utilities',
-    ]
+    ],
+    install_requires=[
+    ],
+    extras_require={
+        'encryption': ['cryptography'],
+    },
 )

@@ -2,9 +2,10 @@
 The base classes for ``secretconfig``.
 """
 from __future__ import print_function, absolute_import, unicode_literals
+
 from collections import Iterable, namedtuple
-from abc import ABCMeta, abstractmethod
-import configparser
+from abc import ABCMeta
+from os import path
 
 #: Base exception for ``secretconfig`` errors.
 class Error(Exception): pass
@@ -36,16 +37,19 @@ class BaseConfig(object):
         section-specific configurations.
         """
         self.__defaults = []
-        if defaults is not None:
-            try:
-                assert(isinstance(defaults, Iterable))
-                for indx, default in enumerate(defaults):
-                    parsedDefault = self.parse_default(default)
-                    self.__defaults.append(parsedDefault)
-            except AssertionError:
-                raise Error('Invalid defaults list given (%s). Must be a list of parsable defaults.' % defaults)
+        if defaults is not None: self.set_defaults(defaults)
 
-        self.__config = []
+        self._config = []
+
+    def set_defaults(self, defaults):
+        self.__defaults = []
+        try:
+            assert(isinstance(defaults, Iterable))
+            for indx, default in enumerate(defaults):
+                parsedDefault = self.parse_default(default)
+                self.__defaults.append(parsedDefault)
+        except AssertionError:
+            raise Error('Invalid defaults list given (%s). Must be a list of parsable defaults.' % defaults)
 
     @staticmethod
     def parse_default(default):
@@ -70,7 +74,7 @@ class BaseConfig(object):
         """
         Returns a list of tuples containing the current values (default or otherwise) for this configuration instance.
         """
-        out = [tup for tup in self.__config] # makes a copy of the list
+        out = [tup for tup in self._config] # makes a copy of the list
         for defTup in self.defaults():
             try:
                 next(outTup for outTup in out if outTup.key == defTup.key)
@@ -98,33 +102,40 @@ class BaseConfig(object):
 
     def sections(self):
         """ Returns a set of available sections. """
-        return set([tup.section for tup in self.__config] +   # include any sections in the config
-                   [tup.section for tup in self.defaults()]) # and any sections in the defaults
+        sections = set()
+        for tup in self._config + self.defaults():
+            try: sections.add(tup.section)
+            except AttributeError: pass
+        return sections
 
     def has_section(self, section):
         """ Returns TF whether a SectionKV with the named ``section`` exists in this configuration instance. """
         try:
-            next(tup for tup in self.__config if tup.section==section)
+            next(tup for tup in self._config if tup.section==section)
         except StopIteration:
             return False # no tuple in the config matched that section
         else:
             return True # at least one tuple in the config did match
 
-    def keys(self, section):
+    def keys(self, *args):
         """
         Returns the keys available in the given ``section``. If ``section is None`` then returns the ``GLOBAL`` keys.
         :raises UnknownSectionError: If ``section`` is not in the list of available sections.
         """
-        if section is None:
-            return [tup.key for tup in self.__config if isinstance(tup, GlobalKV)]
-        elif section not in self.sections():
-            raise UnknownSectionError('Section (%s) is not available.' % section)
+        if len(args) == 0 or args[0] is None:
+            return [tup.key for tup in self._config if isinstance(tup, GlobalKV)]
+        elif args[0] not in self.sections():
+            raise UnknownSectionError('Section (%s) is not available.' %
+                                      args[0])
         else:
-            keys = [tup.key for tup in self.__config if (isinstance(tup, SectionKV) and tup.section==section)]
+            keys = [tup.key for tup in self._config
+                    if (isinstance(tup, SectionKV) and tup.section==args[0])]
             # defaults should be added in as well
-            defaults = [tup.key for tup in self.__defaults if (isinstance(tup, SectionKV) and tup.section==section)]
-            for defKey in defaults:
+            defs = [tup.key for tup in self.__defaults
+                    if (isinstance(tup, SectionKV) and tup.section==args[0])]
+            for defKey in defs:
                 if defKey not in keys: keys.append(defKey)
+            return keys
 
     def has_key(self, section, key):
         """
@@ -190,16 +201,16 @@ class BaseConfig(object):
             tup = SectionKV(section, key, value)
 
         # remove the old tuple's value, if it's there
-        for oldTup in self.__config:
+        for oldTup in self._config:
             if (oldTup.key == tup.key) and ( # keys match
                 # and, if they're section-specific, their sections match too
                 isinstance(oldTup, SectionKV) and isinstance(tup, SectionKV) and oldTup.section == tup.section
             ):
-                self.__config.remove(oldTup)
+                self._config.remove(oldTup)
                 break
 
         # and add in the new tuple's value
-        self.__config.append(tup)
+        self._config.append(tup)
 
     def getint(self, *args):
         """
@@ -208,7 +219,7 @@ class BaseConfig(object):
         """
         return int(self.get(*args))
 
-    def getboolean(self, *args):
+    def getbool(self, *args):
         """
         Helper function that coerces the value to be a boolean.
         :raises ValueError: If the option cannot be coerced into a boolean.
@@ -223,30 +234,58 @@ class BaseConfig(object):
             return [tup for tup in self.config() if (isinstance(tup, SectionKV) and tup.section == section)]
 
     @classmethod
-    def read(self, filenames, *args, **kwargs):
+    def load(cls, filenames, *args, **kwargs):
         """
-        Attempts to read a list of potential filenames, ignoring filenames that cannot be accessed.
+        Loads the given filename(s) as a configuration
+
+        Attempts to read a list of potential filenames, ignoring filenames \
+        that cannot be accessed.
+
+        :param filenames: A filename or a list of potential filenames to try.
+        :param defaults: (Default=[]) A list of tuples to act as default \
+        parameters. Two-tuples map to global key/value pairs and three-tuples \
+        map to section/key/value triplets.
         :raises OSError: If none of the filenames can be accessed.
         :raises ParsingError: If an accessible filename is incorrectly formatted (not parsable).
         """
-        raise NotImplementedError('This needs work.')
+        if isinstance(filenames, str):
+            filenames = [filenames]
 
+        for fName in filenames:
+            if path.exists(fName):
+                try:
+                    with open(fName, 'r') as fIn:
+                        return cls.loads(fIn, **kwargs)
+                except IOError:
+                    pass  # non-accessible
+                except ValueError:
+                    raise ParsingError('Unable to parse file. %s' % fName)
+        raise ValueError('No given filenames can be loaded. [%s]' % filenames)
 
-    def write(cls, filename, overwrite=False, *args, **kwargs):
+    def dump(self, filename, overwrite=False, *args, **kwargs):
         """
         Writes the configuration out to the given filename.
+
         :param filename: The target file to write the configuration to.
-        :param overwrite: (Default=False). If False and the target ``filename`` already exists, fails.
-        :raises OSError: If ``overwrite==False`` and ``filename`` already exists.
+        :param overwrite: (Default=False). If False and the target \
+        ``filename`` already exists, fails.
+        :raises OSError: If ``overwrite==False`` and ``filename`` already \
+        exists.
         """
-        raise NotImplementedError('This needs work too.')
+        if path.exists(filename) and (not overwrite):
+            raise OSError('File already exists. %s' % filename)
 
-    @abstractmethod
-    def __readfp(self, fp):
-        """ Parses the stream. """
-        pass
+        with open(filename, 'w') as fOut:
+            return fOut.write(self.dumps(**kwargs))
 
-    @abstractmethod
-    def __writefp(self, fp):
+    @classmethod
+    def loads(cls, stream, **kwargs):
+        """ Loads a configuration from the given stream. """
+        raise NotImplementedError('``loads`` is not implemented in the base '
+                                  'class.')
+
+    @classmethod
+    def dumps(cls, **kwargs):
         """ Serialized the configuration instance into the stream. """
-        pass
+        raise NotImplementedError('``dumps`` is not implemented in the base '
+                                  'class.')
