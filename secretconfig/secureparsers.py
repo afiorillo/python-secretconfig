@@ -23,7 +23,7 @@ for ParserName, ParserCls in getmembers(parsers):
                     PARSER_CLASS = ParserCls
                     ENCRYPTION_CLASS = EncCls
 
-                    def dumps(self, key, **kwargs):
+                    def dumps(self, key, *args, **kwargs):
                         obj = self.PARSER_CLASS(self.config())
                         plaintext_stream = obj.dumps(
                             **kwargs

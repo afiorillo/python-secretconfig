@@ -245,7 +245,7 @@ class BaseConfig(object):
             if path.exists(fName):
                 try:
                     with open(fName, 'r') as fIn:
-                        return cls.loads(fIn, **kwargs)
+                        return cls.loads(fIn, *args, **kwargs)
                 except IOError:
                     pass  # non-accessible
                 except ValueError:
@@ -266,16 +266,20 @@ class BaseConfig(object):
             raise OSError('File already exists. %s' % filename)
 
         with open(filename, 'w') as fOut:
-            return fOut.write(self.dumps(**kwargs))
+            out = self.dumps(*args, **kwargs)
+            if isinstance(out, tuple):
+                fOut.write(out[0])
+                return out[1]
+            return fOut.write(out)
 
     @classmethod
-    def loads(cls, stream, **kwargs):
+    def loads(cls, stream, *args, **kwargs):
         """ Loads a configuration from the given stream. """
         raise NotImplementedError('``loads`` is not implemented in the base '
                                   'class.')
 
     @classmethod
-    def dumps(cls, **kwargs):
+    def dumps(cls, *args, **kwargs):
         """ Serialized the configuration instance into the stream. """
         raise NotImplementedError('``dumps`` is not implemented in the base '
                                   'class.')
