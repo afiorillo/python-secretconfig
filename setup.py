@@ -17,7 +17,7 @@ setup(
     author='Andrew Fiorillo',
     author_email='andrewmfiorillo@gmail.com',
     description='Configuration files for the paranoid.',
-    long_description=read('README.md'),
+    long_description=read('README'),
     classifiers=[
         'Development Status :: 1 - Planning',
         'Topic :: Utilities',
