@@ -133,6 +133,8 @@ cfg = sc.SymmetricJSONConfig.load('config.json.sym.enc', private_key)
 
 ### Revisions
   - [ ] `BaseConfig` ought to constrain value types and handle sequences too
+  - [ ] More secure strings (like `secureconfig`?)
+  - [ ] Unit tests galore!
 
 ## Contributing
 Make a pull request!
