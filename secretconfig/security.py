@@ -7,6 +7,7 @@ Functions that handle encryption/decryption.
 """
 import os
 import base64
+import abc
 
 try:
     import cryptography
@@ -35,24 +36,31 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 class Encryption(object):
 
+    __metaclass__ = abc.ABCMeta
+
+    SHORT_NAME = 'Base'
+
     #: Hash algorithm from ``cryptography.hazmat.primitives.hashes``
     HASH_ALGORITHM = hashes.SHA512
 
     #: The maximum length of an stream in bytes
     MAX_STREAM_SIZE = 1 * (2 ** 30) # 1 GB
 
-    def _check_stream(self, stream):
+    @classmethod
+    def _check_stream(cls, stream):
         """ Makes streams uniform and enforces limits """
         try: stream = stream.read()
         except AttributeError: pass # then treat it like a string
-        if len(stream) > self.MAX_STREAM_SIZE:
+        if len(stream) > cls.MAX_STREAM_SIZE:
             raise IOError('Unable to process stream of size (%s). Max '
                           'stream size is (%s).' %
-                          (len(stream), self.MAX_STREAM_SIZE))
+                          (len(stream), cls.MAX_STREAM_SIZE))
         return stream
 
 class Symmetric(Encryption):
     """ Simple symmetric encryption with Fernet. """
+
+    SHORT_NAME = 'Symmetric'
 
     @staticmethod
     def generate_key(**kwargs):
@@ -74,6 +82,8 @@ class Symmetric(Encryption):
 
 class PasswordSymmetric(Symmetric):
     """ Password-based symmetric encryption with Fernet. """
+
+    SHORT_NAME = 'Password'
 
     #: Number of iterations to use on the password
     HASH_ITERATIONS = 100000
@@ -127,6 +137,8 @@ from cryptography.hazmat.primitives import serialization
 
 class AssymmetricRSA(Encryption):
     """ Assymetric encryption with RSA. """
+
+    SHORT_NAME = 'RSA'
 
     #: Key size in bits
     KEY_SIZE = 4096

@@ -27,7 +27,9 @@ SectionKV = namedtuple('SectionKV', ['section', 'key', 'value'])
 
 class BaseConfig(object):
     """ The base configuration object. """
-    __metaclass__ = ABCMeta
+    # __metaclass__ = ABCMeta
+
+    SHORT_NAME = 'Base'
 
     def __init__(self, defaults=None, *args, **kwargs):
         """
@@ -62,8 +64,10 @@ class BaseConfig(object):
         if not (isinstance(default, Iterable) and len(default) in [2, 3]):
             raise Error('Invalid default value given (%s). Must be a 2-tuple or 3-tuple.' % default)
         elif len(default) == 2:
+            # print('parsing2:', default)
             return GlobalKV(*default)
         elif len(default) == 3:
+            # print('parsing3:', default)
             return SectionKV(*default)
 
     def defaults(self):
@@ -76,28 +80,18 @@ class BaseConfig(object):
         """
         out = [tup for tup in self._config] # makes a copy of the list
         for defTup in self.defaults():
-            try:
-                next(outTup for outTup in out if outTup.key == defTup.key)
-            except StopIteration:
-                # no tuple exists with that key
+            matchingTups = [tup for tup in out if tup.key == defTup.key]
+            if isinstance(defTup, GlobalKV) and len(matchingTups)==0:
+                # it was a global and there isn't an entry with that key
                 out.append(defTup)
-            else:
-                # At least one tuple in the output already has that key. Is it in the same section?
-                if isinstance(defTup, GlobalKV):
-                    continue # no section
-                else:
-                    try:
-                        next(outTup for outTup in out if (
-                                 isinstance(outTup, SectionKV) and
-                                 outTup.section == defTup.section and
-                                 outTup.value == defTup.value
-                             ))
-                    except StopIteration:
-                        # no tuple exists with that section and key
-                        out.append(defTup)
-                    else:
-                        # At least one exists, we don't need the default.
-                        continue
+            elif isinstance(defTup, SectionKV):
+                matchingTups = [
+                    tup for tup in matchingTups if (
+                        isinstance(tup,SectionKV) and
+                        tup.section==defTup.section
+                    )]
+                if len(matchingTups) == 0:
+                    out.append(defTup)
         return out
 
     def sections(self):
@@ -123,18 +117,14 @@ class BaseConfig(object):
         :raises UnknownSectionError: If ``section`` is not in the list of available sections.
         """
         if len(args) == 0 or args[0] is None:
-            return [tup.key for tup in self._config if isinstance(tup, GlobalKV)]
+            return [tup.key for tup in self.config()
+                    if isinstance(tup, GlobalKV)]
         elif args[0] not in self.sections():
             raise UnknownSectionError('Section (%s) is not available.' %
                                       args[0])
         else:
-            keys = [tup.key for tup in self._config
+            keys = [tup.key for tup in self.config()
                     if (isinstance(tup, SectionKV) and tup.section==args[0])]
-            # defaults should be added in as well
-            defs = [tup.key for tup in self.__defaults
-                    if (isinstance(tup, SectionKV) and tup.section==args[0])]
-            for defKey in defs:
-                if defKey not in keys: keys.append(defKey)
             return keys
 
     def has_key(self, section, key):
@@ -289,3 +279,9 @@ class BaseConfig(object):
         """ Serialized the configuration instance into the stream. """
         raise NotImplementedError('``dumps`` is not implemented in the base '
                                   'class.')
+
+    def __repr__(self):
+        return '<%s>' % self.__class__.__name__
+
+    def __str__(self):
+        return self.dumps()

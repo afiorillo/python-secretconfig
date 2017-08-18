@@ -1,11 +1,14 @@
 """
-Module Information
+secretconfig
+
+
 """
-from __future__ import print_function, absolute_import, unicode_literals
 
-from pathlib2 import Path
+# plaintext parsers
+from parsers import JSONConfig, IniConfig
 
-import logging
-
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)-18s %(levelname)-8s %(message)s')
-LOG = logging.getLogger('logger')
+# encrypted parser magic
+import sys
+from secureparsers import secureparsers as __sps
+for SPName, SPCls in __sps.items():
+    setattr(sys.modules[__name__], SPName, SPCls)

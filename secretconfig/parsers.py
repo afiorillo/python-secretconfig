@@ -1,9 +1,9 @@
 import json
 from collections import OrderedDict as od
 
-from baseclass import BaseConfig, GlobalKV, SectionKV
+import baseclass
 
-class JSONConfig(BaseConfig):
+class JSONConfig(baseclass.BaseConfig):
     """
     A config parser for JSON-formatted files.
 
@@ -24,6 +24,8 @@ class JSONConfig(BaseConfig):
 
     """
 
+    SHORT_NAME = 'JSON'
+
     @classmethod
     def loads(cls, stream, **kwargs):
         """ Loads a JSON-formatted stream. """
@@ -35,10 +37,12 @@ class JSONConfig(BaseConfig):
         for section, inner in obj.items():
             if isinstance(inner, dict):
                 for key, value in inner.items():
-                    cfg._config.append(SectionKV(section, key, value))
+                    cfg._config.append(
+                        baseclass.SectionKV(section, key, value)
+                    )
             else:
-                cfg._config.append(GlobalKV(section, inner))
-        return obj
+                cfg._config.append(baseclass.GlobalKV(section, inner))
+        return cfg
 
     def dumps(self, pretty=True, **kwargs):
         """ Dumps a JSON-formatted stream. """
@@ -54,7 +58,7 @@ class JSONConfig(BaseConfig):
         else:
             return json.dumps(obj)
 
-class IniConfig(BaseConfig):
+class IniConfig(baseclass.BaseConfig):
     """
     A config parser for INI-formatted files.
 
@@ -67,13 +71,15 @@ class IniConfig(BaseConfig):
     'baz'
     >>> cfg.set('foo', 'bar', 'bas')
     >>> cfg.dump("test_cfg.ini", overwrite=True)
-    >>> cfg2 = JSONConfig.load("test_cfg.ini")
+    >>> cfg2 = IniConfig.load("test_cfg.ini")
     >>> cfg.sections()
     set(['foo'])
     >>> cfg.get('foo', 'bar')
     'bas'
 
     """
+
+    SHORT_NAME = 'Ini'
 
     @classmethod
     def loads(cls, stream, **kwargs):
@@ -82,12 +88,14 @@ class IniConfig(BaseConfig):
         cfg = cls(defaults=kwargs.get('defaults', None))
 
         try:
-            lines = stream.splitlines()
+            lines = stream.readlines()
         except AttributeError:
             lines = [l.strip() for l in stream.split('\n') if l.strip()!='']
 
         section = None
         for lIdx, l in enumerate(lines):
+            l = l.strip() # take out whitespace
+
             # skip comment lines
             if l[0] in ['#', ';']:
                 continue
@@ -98,15 +106,15 @@ class IniConfig(BaseConfig):
 
             parts = l.split('=')
             try:
-                key = parts[0]
-                value = parts[1].strip('"')
+                key = parts[0].strip().strip('"')
+                value = parts[1].strip().strip('"')
             except IndexError:
                 raise ValueError('Line %d has invalid key/value pair' % lIdx+1)
 
             if section is None:
-                cfg._config.append(GlobalKV(key, value))
+                cfg._config.append(baseclass.GlobalKV(key, value))
             else:
-                cfg._config.append(SectionKV(section, key, value))
+                cfg._config.append(baseclass.SectionKV(section, key, value))
 
         return cfg
 
