@@ -7,8 +7,8 @@ class JSONConfig(baseclass.BaseConfig):
     """
     A config parser for JSON-formatted files.
 
-    Usage
-    =====
+    Usage:
+
     >>> cfg = JSONConfig(defaults=[('hello', 'world'), ('foo', 'bar', 'baz')])
     >>> cfg.get('hello')
     'world'
@@ -62,8 +62,8 @@ class IniConfig(baseclass.BaseConfig):
     """
     A config parser for INI-formatted files.
 
-    Usage
-    =====
+    Usage:
+
     >>> cfg = IniConfig(defaults=[('hello', 'world'), ('foo', 'bar', 'baz')])
     >>> cfg.get('hello')
     'world'

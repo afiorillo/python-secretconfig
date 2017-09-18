@@ -19,10 +19,10 @@ class UnknownSectionError(Error, KeyError): pass
 #: The exception raised when trying to access keys that do not exist
 class UnknownKeyError(Error, KeyError): pass
 
-#: The structured tuple for ``GLOBAL`` key/value pairs
+# The structured tuple for ``GLOBAL`` key/value pairs
 GlobalKV = namedtuple('GlobalKV', ['key', 'value'])
 
-#: The structured tuple for section-specific key/value pairs
+# The structured tuple for section-specific key/value pairs
 SectionKV = namedtuple('SectionKV', ['section', 'key', 'value'])
 
 class BaseConfig(object):
