@@ -1,0 +1,439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>secretconfig - Configuration files for the paranoid &#8212; secretconfig 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="secretconfig-configuration-files-for-the-paranoid">
+<h1>secretconfig - Configuration files for the paranoid<a class="headerlink" href="#secretconfig-configuration-files-for-the-paranoid" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="api-documentation">
+<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="base-classes">
+<h3>Base Classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="secretconfig.baseclass.GlobalKV">
+<em class="property">class </em><code class="descclassname">secretconfig.baseclass.</code><code class="descname">GlobalKV</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.GlobalKV" title="Permalink to this definition">¶</a></dt>
+<dd><p>A key/value pair used for &#8220;global&#8221; configuration values.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="secretconfig.baseclass.SectionKV">
+<em class="property">class </em><code class="descclassname">secretconfig.baseclass.</code><code class="descname">SectionKV</code><span class="sig-paren">(</span><em>section</em>, <em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.SectionKV" title="Permalink to this definition">¶</a></dt>
+<dd><p>A section/key/value tuple used for &#8220;sectioned&#8221; configuration values.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="secretconfig.baseclass.BaseConfig">
+<em class="property">class </em><code class="descclassname">secretconfig.baseclass.</code><code class="descname">BaseConfig</code><span class="sig-paren">(</span><em>defaults=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>The base configuration object.</p>
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.config">
+<code class="descname">config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of tuples containing the current values (default or otherwise) for this configuration instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.defaults">
+<code class="descname">defaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of tuples containing the defaults for this configuration instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.dump">
+<code class="descname">dump</code><span class="sig-paren">(</span><em>filename</em>, <em>overwrite=False</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the configuration out to the given filename.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> &#8211; The target file to write the configuration to.</li>
+<li><strong>overwrite</strong> &#8211; (Default=False). If False and the target         <code class="docutils literal"><span class="pre">filename</span></code> already exists, fails.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>OSError</strong> &#8211; If <code class="docutils literal"><span class="pre">overwrite==False</span></code> and <code class="docutils literal"><span class="pre">filename</span></code> already         exists.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.baseclass.BaseConfig.dumps">
+<em class="property">classmethod </em><code class="descname">dumps</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialized the configuration instance into the stream.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value for the given option. Can either be called <code class="docutils literal"><span class="pre">get(key)</span></code> for global key/value pairs or         <code class="docutils literal"><span class="pre">get(section,</span> <span class="pre">key)</span></code> for section-specific key/value pairs.
+:raises UnknownSectionError: If the <code class="docutils literal"><span class="pre">section</span></code> (if given) is not available.
+:raises UnknownKeyError: If the given <code class="docutils literal"><span class="pre">key</span></code> is not available in the <code class="docutils literal"><span class="pre">section</span></code> (if given) or globally (if         not).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.getbool">
+<code class="descname">getbool</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.getbool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that coerces the value to be a boolean.
+:raises ValueError: If the option cannot be coerced into a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.getint">
+<code class="descname">getint</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.getint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that coerces the value to be an integer.
+:raises ValueError: If the option cannot be coerced into an integer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.has_key">
+<code class="descname">has_key</code><span class="sig-paren">(</span><em>section</em>, <em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.has_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns TF if the <code class="docutils literal"><span class="pre">key</span></code> is available in the given <code class="docutils literal"><span class="pre">section</span></code>. Returns False if either the <code class="docutils literal"><span class="pre">section</span></code> or         <code class="docutils literal"><span class="pre">key</span></code> does not exist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.has_section">
+<code class="descname">has_section</code><span class="sig-paren">(</span><em>section</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.has_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns TF whether a SectionKV with the named <code class="docutils literal"><span class="pre">section</span></code> exists in this configuration instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.items">
+<code class="descname">items</code><span class="sig-paren">(</span><em>section</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of tuples in the given section. If <code class="docutils literal"><span class="pre">section</span> <span class="pre">is</span> <span class="pre">None</span></code> returns the global tuples.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the keys available in the given <code class="docutils literal"><span class="pre">section</span></code>. If <code class="docutils literal"><span class="pre">section</span> <span class="pre">is</span> <span class="pre">None</span></code> then returns the <code class="docutils literal"><span class="pre">GLOBAL</span></code> keys.
+:raises UnknownSectionError: If <code class="docutils literal"><span class="pre">section</span></code> is not in the list of available sections.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.baseclass.BaseConfig.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>filenames</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the given filename(s) as a configuration</p>
+<p>Attempts to read a list of potential filenames, ignoring filenames         that cannot be accessed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filenames</strong> &#8211; A filename or a list of potential filenames to try.</li>
+<li><strong>defaults</strong> &#8211; (Default=[]) A list of tuples to act as default         parameters. Two-tuples map to global key/value pairs and three-tuples         map to section/key/value triplets.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>OSError</strong> &#8211; If none of the filenames can be accessed.</li>
+<li><strong>ParsingError</strong> &#8211; If an accessible filename is incorrectly formatted (not parsable).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.baseclass.BaseConfig.loads">
+<em class="property">classmethod </em><code class="descname">loads</code><span class="sig-paren">(</span><em>stream</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a configuration from the given stream.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="secretconfig.baseclass.BaseConfig.parse_default">
+<em class="property">static </em><code class="descname">parse_default</code><span class="sig-paren">(</span><em>default</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.parse_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses one of the elements in a defaults list. Returns either a <code class="docutils literal"><span class="pre">GlobalKV</span></code> or a <code class="docutils literal"><span class="pre">SectionKV</span></code>.</p>
+<p>Accepts either a 2-tuple (for <code class="docutils literal"><span class="pre">GlobalKV</span></code> defaults) or a 3-tuple (for <code class="docutils literal"><span class="pre">SectionKV</span></code> defaults). 2-tuples are 
+parsed as (key,value) and 3-tuples are parsed as (section,key,value).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.sections">
+<code class="descname">sections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.sections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of available sections.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="secretconfig.baseclass.BaseConfig.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.baseclass.BaseConfig.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value for the given option. Can either be called <code class="docutils literal"><span class="pre">set(key,</span> <span class="pre">value)</span></code> for global key/value pairs or         <code class="docutils literal"><span class="pre">set(section,</span> <span class="pre">key,</span> <span class="pre">value)</span></code> for section-specific key/value pairs. Overwrites any existing values.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="plaintext-parsers">
+<h3>Plaintext Parsers<a class="headerlink" href="#plaintext-parsers" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="secretconfig.JSONConfig">
+<em class="property">class </em><code class="descclassname">secretconfig.</code><code class="descname">JSONConfig</code><span class="sig-paren">(</span><em>defaults=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.JSONConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>A config parser for JSON-formatted files.</p>
+<p>Usage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">JSONConfig</span><span class="p">(</span><span class="n">defaults</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;world&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="go">&#39;world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="go">&#39;baz&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bas&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s2">&quot;test_cfg.json&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg2</span> <span class="o">=</span> <span class="n">JSONConfig</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;test_cfg.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">sections</span><span class="p">()</span>
+<span class="go">set([&#39;foo&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="go">&#39;bas&#39;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="secretconfig.JSONConfig.dumps">
+<code class="descname">dumps</code><span class="sig-paren">(</span><em>pretty=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.JSONConfig.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dumps a JSON-formatted stream.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.JSONConfig.loads">
+<em class="property">classmethod </em><code class="descname">loads</code><span class="sig-paren">(</span><em>stream</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.JSONConfig.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a JSON-formatted stream.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="secretconfig.IniConfig">
+<em class="property">class </em><code class="descclassname">secretconfig.</code><code class="descname">IniConfig</code><span class="sig-paren">(</span><em>defaults=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.IniConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>A config parser for INI-formatted files.</p>
+<p>Usage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">IniConfig</span><span class="p">(</span><span class="n">defaults</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;world&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="go">&#39;world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="go">&#39;baz&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bas&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s2">&quot;test_cfg.ini&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg2</span> <span class="o">=</span> <span class="n">IniConfig</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;test_cfg.ini&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">sections</span><span class="p">()</span>
+<span class="go">set([&#39;foo&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="go">&#39;bas&#39;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="secretconfig.IniConfig.dumps">
+<code class="descname">dumps</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.IniConfig.dumps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dumps the config to an INI-formatted stream.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.IniConfig.loads">
+<em class="property">classmethod </em><code class="descname">loads</code><span class="sig-paren">(</span><em>stream</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.IniConfig.loads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads an INI-formatted steam.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="encryption-mix-ins">
+<h3>Encryption Mix-Ins<a class="headerlink" href="#encryption-mix-ins" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="secretconfig.security.Symmetric">
+<em class="property">class </em><code class="descclassname">secretconfig.security.</code><code class="descname">Symmetric</code><a class="headerlink" href="#secretconfig.security.Symmetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple symmetric encryption with Fernet.</p>
+<dl class="classmethod">
+<dt id="secretconfig.security.Symmetric.encrypt">
+<em class="property">classmethod </em><code class="descname">encrypt</code><span class="sig-paren">(</span><em>key</em>, <em>stream</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.Symmetric.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns an encrypted stream</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="secretconfig.security.Symmetric.generate_key">
+<em class="property">static </em><code class="descname">generate_key</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.Symmetric.generate_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a stream for an encryption key</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="secretconfig.security.PasswordSymmetric">
+<em class="property">class </em><code class="descclassname">secretconfig.security.</code><code class="descname">PasswordSymmetric</code><a class="headerlink" href="#secretconfig.security.PasswordSymmetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Password-based symmetric encryption with Fernet.</p>
+<dl class="attribute">
+<dt id="secretconfig.security.PasswordSymmetric.HASH_ITERATIONS">
+<code class="descname">HASH_ITERATIONS</code><em class="property"> = 100000</em><a class="headerlink" href="#secretconfig.security.PasswordSymmetric.HASH_ITERATIONS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of iterations to use on the password</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.PasswordSymmetric.decrypt">
+<em class="property">classmethod </em><code class="descname">decrypt</code><span class="sig-paren">(</span><em>password</em>, <em>encrypted_stream</em>, <em>salt=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.PasswordSymmetric.decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>uses the password and salt given to decrypt the stream</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.PasswordSymmetric.encrypt">
+<em class="property">classmethod </em><code class="descname">encrypt</code><span class="sig-paren">(</span><em>password</em>, <em>stream</em>, <em>salt=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.PasswordSymmetric.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>uses the password given to encrypt the stream</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="secretconfig.security.AssymmetricRSA">
+<em class="property">class </em><code class="descclassname">secretconfig.security.</code><code class="descname">AssymmetricRSA</code><a class="headerlink" href="#secretconfig.security.AssymmetricRSA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assymetric encryption with RSA.</p>
+<dl class="attribute">
+<dt id="secretconfig.security.AssymmetricRSA.KEY_SIZE">
+<code class="descname">KEY_SIZE</code><em class="property"> = 4096</em><a class="headerlink" href="#secretconfig.security.AssymmetricRSA.KEY_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Key size in bits</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.AssymmetricRSA.decrypt">
+<em class="property">classmethod </em><code class="descname">decrypt</code><span class="sig-paren">(</span><em>private_key</em>, <em>encrypted_stream</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.AssymmetricRSA.decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts the stream with the private key</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.AssymmetricRSA.dumps_private_key">
+<em class="property">classmethod </em><code class="descname">dumps_private_key</code><span class="sig-paren">(</span><em>private_key</em>, <em>password=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.AssymmetricRSA.dumps_private_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serializes and encodes the private key into PEM format</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.AssymmetricRSA.dumps_public_key">
+<em class="property">classmethod </em><code class="descname">dumps_public_key</code><span class="sig-paren">(</span><em>public_key</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.AssymmetricRSA.dumps_public_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serializes and encodes the public key into PEM format</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.AssymmetricRSA.encrypt">
+<em class="property">classmethod </em><code class="descname">encrypt</code><span class="sig-paren">(</span><em>public_key</em>, <em>stream</em>, <em>sign_with_private_key=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.AssymmetricRSA.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts the stream with the public key</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.AssymmetricRSA.generate_keys">
+<em class="property">classmethod </em><code class="descname">generate_keys</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.AssymmetricRSA.generate_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a tuple (public, private) keys</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.AssymmetricRSA.loads_private_key">
+<em class="property">classmethod </em><code class="descname">loads_private_key</code><span class="sig-paren">(</span><em>pem_string</em>, <em>password=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.AssymmetricRSA.loads_private_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a PEM formatted private key</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="secretconfig.security.AssymmetricRSA.loads_public_key">
+<em class="property">classmethod </em><code class="descname">loads_public_key</code><span class="sig-paren">(</span><em>pem_string</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#secretconfig.security.AssymmetricRSA.loads_public_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a PEM formatted public key</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">secretconfig - Configuration files for the paranoid</a><ul>
+<li><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
+<li><a class="reference internal" href="#base-classes">Base Classes</a></li>
+<li><a class="reference internal" href="#plaintext-parsers">Plaintext Parsers</a></li>
+<li><a class="reference internal" href="#encryption-mix-ins">Encryption Mix-Ins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Andrew Fiorillo.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,1 @@
+Search.setIndex({docnames:["index"],envversion:50,filenames:["index.rst"],objects:{},objnames:{},objtypes:{},terms:{},titles:["secretconfig - Configuration files for the paranoid"],titleterms:{"class":0,Ins:0,api:0,base:0,configur:0,document:0,encrypt:0,file:0,mix:0,paranoid:0,parser:0,plaintext:0,secretconfig:0}})
