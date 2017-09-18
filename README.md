@@ -29,7 +29,7 @@ assert(newCfg.get('password') == 'plaintext_password'
 ```
 
 Storing a plaintext password is **BAD**<sup>[citation needed]</sup>.
-[Encrypting](#) [the](#) [password](#) [is](#) [less](#) [bad](#) but
+Encrypting the password is less bad but
   sometimes a necessary evil.
 If you must do evil, you owe it to yourself to do it well.
 `secretconfig` exposes a few different encryption schemes that are better
@@ -131,10 +131,11 @@ cfg = sc.SymmetricJSONConfig.load('config.json.sym.enc', private_key)
   - [ ] Pure Python/Cython way to wrap around OpenSSL? Should it use OpenSSL at all?
   - [ ] Should `BaseConfig` enforce sections like a stdlib `ConfigParser` or should it just use them as extended keys?
 
-### Revisions
+### Etc
   - [ ] `BaseConfig` ought to constrain value types and handle sequences too
   - [ ] More secure strings (like `secureconfig`?)
-  - [ ] Unit tests galore!
+  - [ ] Unit tests. Aim for 100% coverage.
+  - [ ] Sphinx docs
 
 ## Contributing
 Make a pull request!

@@ -14,16 +14,17 @@ try:
 except ImportError:
     raise ImportError("""\
 Unable to import security.py without having ``cryptography`` package
-installed. Try installing again as ``pip install secretconfig[encryption]``.
+installed. Try installing again as ``pip install secretconfig``.
 """)
 
-try:
-    import Crypto
-except ImportError:
-    raise ImportError("""\
-Unable to import security.py without having ``pycrypto`` package installed.
-Try installing again as ``pip install secretconfig[encryption]``.
-""")
+# PyCrypto is no longer a requirement
+# try:
+#     import Crypto
+# except ImportError:
+#     raise ImportError("""\
+# Unable to import security.py without having ``pycrypto`` package installed.
+# Try installing again as ``pip install secretconfig``.
+# """)
 
 
 ########################

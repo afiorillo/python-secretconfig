@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name='python-secretconfig',
-    version='0.0.1',
+    version='0.1.0',
     packages=[''],
     url='http://github.com/andrewmfiorillo/python-secretconfig',
     license='MIT',
@@ -25,6 +25,6 @@ setup(
     install_requires=[
     ],
     extras_require={
-        'encryption': ['cryptography'],
+        'encryption': ['cryptography', 'pycrypto'],
     },
 )
